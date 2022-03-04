@@ -101,7 +101,7 @@ export default {
           this.products = res.data.products
         })
         .catch(() => {
-          this.$router.push('/login')
+          this.$router.go(0)
         })
     },
     //* modal
@@ -117,10 +117,11 @@ export default {
         this.modal_status.tempProduct = JSON.parse(JSON.stringify(product)) //* 深拷貝
         //* 因為在新增時多圖不是必填的選項，所以在編輯時會遇到沒有多圖 imagesUrl 陣列，無法新增多圖的情況 ，
         //* 若要新增多圖可以在 openModal 先判斷有沒有 imagesUrl 陣列，如果不存在就新增一個空的 imagesUrl 陣列
-        if (!this.modal_status.tempProduct.imagesUrl) {
-          this.modal_status.tempProduct.imagesUrl = []
-        }
+
         emitter.emit('update_modal', this.modal_status)
+      }
+      if (!this.modal_status.tempProduct.imagesUrl) {
+        this.modal_status.tempProduct.imagesUrl = []
       }
     },
     //* 刪除產品
@@ -135,6 +136,14 @@ export default {
         this.loading[item] = ''
       }, 1000)
     }
+  },
+  created () {
+    //* 將儲存在 cookie 的 token 取出
+    const token = document.cookie.replace(
+      /(?:(?:^|.*;\s*)mizuToken\s*=\s*([^;]*).*$)|^.*$/,
+      '$1'
+    )
+    this.$http.defaults.headers.common.Authorization = token
   },
   mounted () {
     this.get_products()

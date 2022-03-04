@@ -44,6 +44,7 @@ export default {
         .then(() => {
           //* 確認登入後推送到產品頁
           this.$router.push('/product')
+          // this.$router.back()
         })
         .catch(() => {
           this.$router.push('/login')

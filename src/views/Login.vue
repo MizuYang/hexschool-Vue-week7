@@ -57,7 +57,7 @@ export default {
           //* token, expired 存入 cookie
           const { token, expired } = res.data
           document.cookie = `mizuToken=${token};expires=${new Date(expired)};`
-          this.$router.push('/')
+          this.$router.push('/product')
         })
         .catch((err) => {
           alert(err.response.data.message)

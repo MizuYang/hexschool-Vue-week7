@@ -96,7 +96,9 @@ export default {
           this.orders = res.data.orders
         })
         .catch(() => {
-          this.$router.push('/login')
+          this.$router.go(-1)
+          // this.$router.replace('/empty')
+          // this.$router.push('/order')
         })
     },
     //* 查看訂單
