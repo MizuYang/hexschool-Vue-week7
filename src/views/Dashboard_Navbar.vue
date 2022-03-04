@@ -39,16 +39,25 @@ export default {
   methods: {
     //* 登入驗證
     checkLogin () {
-      const api = `${process.env.VUE_APP_API}/api/user/check`
-      this.$http.post(api)
-        .then(() => {
+      //* 驗證前先取出 cookie 的驗證資料，
+      const token = document.cookie.replace(
+        /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
+        '$1'
+      )
+      if (token) {
+        //* Axios 預設值
+        this.$http.defaults.headers.common.Authorization = `${token}`
+
+        const api = `${process.env.VUE_APP_API}/api/user/check`
+        this.$http.post(api)
+          .then(() => {
           //* 確認登入後推送到產品頁
-          this.$router.push('/product')
-          // this.$router.back()
-        })
-        .catch(() => {
-          this.$router.push('/login')
-        })
+            this.$router.push('/product')
+          })
+          .catch(() => {
+            this.$router.push('/login')
+          })
+      }
     },
     //* 登出
     logOut () {
@@ -57,6 +66,8 @@ export default {
         .post(api)
         .then((res) => {
           alert(res.data.message)
+          //* 清除 cookie
+          document.cookie = 'mizuToken=;expires=;'
           this.$router.push('/login')
         })
         .catch((err) => {
@@ -65,12 +76,6 @@ export default {
     }
   },
   mounted () {
-    //* 將儲存在 cookie 的 token 取出
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)mizuToken\s*=\s*([^;]*).*$)|^.*$/,
-      '$1'
-    )
-    this.$http.defaults.headers.common.Authorization = token
     //* 檢查登入狀態
     this.checkLogin()
   }

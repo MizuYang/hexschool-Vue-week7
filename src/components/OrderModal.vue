@@ -175,7 +175,9 @@ export default {
     this.order_modal = new Modal(document.getElementById('productModal'))
     emitter.on('view_order', (order) => {
       this.tempOrder = order
-      this.order_modal.show()
+      setTimeout(() => {
+        this.order_modal.show()
+      }, 1000)
     })
   }
 }

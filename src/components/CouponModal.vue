@@ -150,7 +150,9 @@ export default {
         //* 再將日期賦予上去 (日期的 v-model 是分開寫的)
         this.due_date = dateAndTime[0]
       }
-      this.couponModal.show()
+      setTimeout(() => {
+        this.couponModal.show()
+      }, 1000)
     })
   }
 }

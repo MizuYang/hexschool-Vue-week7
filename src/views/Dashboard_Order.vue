@@ -85,6 +85,14 @@ export default {
     }
   },
   methods: {
+    //* 登入驗證
+    checkLogin () {
+      const api = `${process.env.VUE_APP_API}/api/user/check`
+      this.$http.post(api)
+        .catch(() => {
+          this.$router.push('/login')
+        })
+    },
     //* 取得訂單列表
     get_order (page) {
       emitter.emit('load', 500)
@@ -96,9 +104,7 @@ export default {
           this.orders = res.data.orders
         })
         .catch(() => {
-          this.$router.go(-1)
-          // this.$router.replace('/empty')
-          // this.$router.push('/order')
+          this.$router.push('/login')
         })
     },
     //* 查看訂單
@@ -124,10 +130,17 @@ export default {
     }
   },
   mounted () {
+    //* 將儲存在 cookie 的 token 取出
+    const token = document.cookie.replace(
+      /(?:(?:^|.*;\s*)mizuToken\s*=\s*([^;]*).*$)|^.*$/,
+      '$1'
+    )
+    this.$http.defaults.headers.common.Authorization = token
     this.get_order()
     emitter.on('get-orders', () => {
       this.get_order()
     })
+    this.checkLogin()
   }
 }
 </script>

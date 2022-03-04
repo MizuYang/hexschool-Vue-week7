@@ -79,6 +79,14 @@ export default {
     }
   },
   methods: {
+    //* 登入驗證
+    checkLogin () {
+      const api = `${process.env.VUE_APP_API}/api/user/check`
+      this.$http.post(api)
+        .catch(() => {
+          this.$router.push('/login')
+        })
+    },
     //* 開啟新增、編輯優惠券 modal
     openCouponModal (status, item) {
       if (status) {
@@ -121,10 +129,17 @@ export default {
     }
   },
   mounted () {
+    //* 將儲存在 cookie 的 token 取出
+    const token = document.cookie.replace(
+      /(?:(?:^|.*;\s*)mizuToken\s*=\s*([^;]*).*$)|^.*$/,
+      '$1'
+    )
+    this.$http.defaults.headers.common.Authorization = token
     this.getCoupon()
     emitter.on('get_coupon', () => {
       this.getCoupon()
     })
+    this.checkLogin()
   }
 }
 </script>

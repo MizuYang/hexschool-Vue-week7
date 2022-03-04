@@ -92,6 +92,19 @@ export default {
     }
   },
   methods: {
+    //* 登入驗證
+    checkLogin () {
+      const api = `${process.env.VUE_APP_API}/api/user/check`
+      this.$http.post(api)
+        .then(() => {
+          //* 確認登入後推送到產品頁
+          this.$router.push('/product')
+          // this.$router.back()
+        })
+        .catch(() => {
+          this.$router.push('/login')
+        })
+    },
     //* 取得產品
     get_products () {
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/products/all`
@@ -101,7 +114,7 @@ export default {
           this.products = res.data.products
         })
         .catch(() => {
-          this.$router.go(0)
+          this.$router.push('/login')
         })
     },
     //* modal
@@ -150,6 +163,7 @@ export default {
     emitter.on('get_product', () => {
       this.get_products()
     })
+    this.checkLogin()
   }
 }
 </script>
