@@ -74,12 +74,6 @@ export default {
     }
   },
   mounted () {
-    //* 將儲存在 cookie 的 token 取出
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)mizuToken\s*=\s*([^;]*).*$)|^.*$/,
-      '$1'
-    )
-    this.$http.defaults.headers.common.Authorization = token
     this.delModal = new Modal(document.getElementById('delModal'))
     emitter.on('deleteOrder', (order) => {
       this.order = order

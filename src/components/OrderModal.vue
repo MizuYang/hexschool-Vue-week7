@@ -172,12 +172,6 @@ export default {
     }
   },
   mounted () {
-    //* 將儲存在 cookie 的 token 取出
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)mizuToken\s*=\s*([^;]*).*$)|^.*$/,
-      '$1'
-    )
-    this.$http.defaults.headers.common.Authorization = token
     this.order_modal = new Modal(document.getElementById('productModal'))
     emitter.on('view_order', (order) => {
       this.tempOrder = order

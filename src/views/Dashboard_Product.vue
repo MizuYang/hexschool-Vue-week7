@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="text-center my-3">
-      <h2>前台產品列表</h2>
+      <h2>產品列表</h2>
     </div>
     <div class="text-end my-3">
       <button
@@ -30,7 +30,8 @@
             </div>
           </div>
           <div class="card-footer justify-content-between d-flex">
-            {{ product.is_enabled ? '[ 已啟用 ]' : '[ 未啟用 ]' }}
+            <strong v-if="product.is_enabled === 1" class="text-success fs-5">已啟用</strong>
+            <del v-else class="text-muted">未啟用</del>
             <div class="ms-auto me-1">
               <button
                 class="btn btn-secondary"
@@ -99,9 +100,8 @@ export default {
         .then((res) => {
           this.products = res.data.products
         })
-        .catch((err) => {
+        .catch(() => {
           this.$router.push('/login')
-          alert(err.data.message)
         })
     },
     //* modal
@@ -137,16 +137,7 @@ export default {
     }
   },
   mounted () {
-    //* 將儲存在 cookie 的 token 取出
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)mizuToken\s*=\s*([^;]*).*$)|^.*$/,
-      '$1'
-    )
-    this.$http.defaults.headers.common.Authorization = token
     this.get_products()
-    emitter.on('getProduct', () => {
-      this.get_products()
-    })
     emitter.on('get_product', () => {
       this.get_products()
     })

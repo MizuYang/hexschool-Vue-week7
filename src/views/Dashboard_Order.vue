@@ -95,9 +95,8 @@ export default {
           this.pagination = res.data.pagination
           this.orders = res.data.orders
         })
-        .catch((err) => {
+        .catch(() => {
           this.$router.push('/login')
-          alert(err.data.message)
         })
     },
     //* 查看訂單
@@ -123,12 +122,6 @@ export default {
     }
   },
   mounted () {
-    //* 將儲存在 cookie 的 token 取出
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)mizuToken\s*=\s*([^;]*).*$)|^.*$/,
-      '$1'
-    )
-    this.$http.defaults.headers.common.Authorization = token
     this.get_order()
     emitter.on('get-orders', () => {
       this.get_order()

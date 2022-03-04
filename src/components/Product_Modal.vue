@@ -229,7 +229,7 @@ export default {
         .then((res) => {
           alert(res.data.message)
           this.productModal.hide()
-          emitter.emit('getProduct')
+          emitter.emit('get_product')
         })
         .catch((err) => {
           alert(err.data.message)

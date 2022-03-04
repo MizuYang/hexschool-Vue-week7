@@ -104,9 +104,8 @@ export default {
           this.coupons = res.data.coupons
           this.coupon_pagination = res.data.pagination
         })
-        .catch((err) => {
+        .catch(() => {
           this.$router.push('/login')
-          alert(err.data.message)
         })
     },
     //* 日期轉換
